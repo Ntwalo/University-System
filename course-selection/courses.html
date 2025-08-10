@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Selection</title>
+  <link rel="stylesheet" href="courses.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="left">
+      <img src="../assets/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'"/>
+      <span class="app-name">Course Selection</span>
+    </div>
+    <nav class="nav">
+      <a href="../dashboard/dashboard.html">Dashboard</a>
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Choose up to two preferred courses</h2>
+      <p class="muted">Once submitted, your selection will be reviewed by administrators.</p>
+
+      <div id="courseGrid" class="grid"></div>
+
+      <div class="row end">
+        <button id="submitBtn" class="btn primary">Submit selection</button>
+      </div>
+
+      <p id="info" class="muted"></p>
+      <p id="error" class="error"></p>
+      <p id="success" class="success"></p>
+    </section>
+  </main>
+
+  <script type="module" src="courses.js"></script>
+</body>
+</html>

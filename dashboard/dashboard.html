@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="left">
+      <img src="../assets/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'"/>
+      <span class="app-name">University System</span>
+    </div>
+    <nav class="nav">
+      <a href="../course-selection/courses.html">Course selection</a>
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2 id="greeting">Hello</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>Your profile</h3>
+          <ul id="profile">
+            <li><strong>Name:</strong> <span id="name"></span></li>
+            <li><strong>Student number:</strong> <span id="studentNumber"></span></li>
+            <li><strong>Email:</strong> <span id="email"></span></li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Course selection status</h3>
+          <div id="statusBox" class="status">
+            <p><strong>Status:</strong> <span id="status"></span></p>
+            <p><strong>Choices:</strong> <span id="choices"></span></p>
+            <p><strong>Accepted course:</strong> <span id="acceptedCourse"></span></p>
+            <a class="btn primary" href="../course-selection/courses.html">Update selection</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin panel (visible if role === 'admin') -->
+    <section id="adminPanel" class="card hidden">
+      <h2>Admin — Approvals</h2>
+      <p class="muted">Approve student course selections below.</p>
+      <div id="pendingList" class="pending-list"></div>
+    </section>
+  </main>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

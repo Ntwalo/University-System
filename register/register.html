@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>University System — Register</title>
+  <link rel="stylesheet" href="register.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="gradient-bg"></div>
+  <main class="container">
+    <section class="card">
+      <div class="brand">
+        <img src="../assets/logo.png" alt="Logo" onerror="this.style.display='none'"/>
+        <h1>Create your profile</h1>
+        <p class="subtitle">You’ll get your student number after successful registration</p>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <div class="grid">
+          <div class="input">
+            <label for="firstName">First name</label>
+            <input id="firstName" type="text" required placeholder="e.g., Thabo"/>
+          </div>
+          <div class="input">
+            <label for="lastName">Last name</label>
+            <input id="lastName" type="text" required placeholder="e.g., Mokoena"/>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="email">Email address</label>
+          <input id="email" type="email" required placeholder="e.g., you@example.com"/>
+        </div>
+
+        <div class="grid">
+          <div class="input">
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+          <div class="input">
+            <label for="dob">Date of birth</label>
+            <input id="dob" type="date" required />
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="input">
+            <label for="password">Password</label>
+            <input id="password" type="password" required placeholder="Minimum 6 characters"/>
+          </div>
+          <div class="input">
+            <label for="confirmPassword">Confirm password</label>
+            <input id="confirmPassword" type="password" required placeholder="Re-enter password"/>
+          </div>
+        </div>
+
+        <button type="submit" class="btn primary">Create account</button>
+
+        <p class="meta">Already have an account?
+          <a class="link" href="../login/login.html">Log in</a>
+        </p>
+
+        <p id="error" class="error"></p>
+        <div id="success" class="success hidden">
+          <h3>Profile created!</h3>
+          <p>Your student number is: <strong id="studentNumberDisplay"></strong></p>
+          <a class="btn primary" href="../login/login.html">Proceed to login</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="register.js"></script>
+</body>
+</html>

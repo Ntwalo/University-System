@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>University System — Login</title>
+  <link rel="stylesheet" href="login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="gradient-bg"></div>
+
+  <main class="container">
+    <section class="card">
+      <div class="brand">
+        <img src="../assets/logo.png" alt="Logo" onerror="this.style.display='none'"/>
+        <h1>Welcome back</h1>
+        <p class="subtitle">Sign in with your student number to access your dashboard</p>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="input">
+          <label for="studentNumber">Student number</label>
+          <input type="text" id="studentNumber" name="studentNumber" placeholder="e.g., ST0123456789" required />
+        </div>
+
+        <div class="input">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Your password" required />
+        </div>
+
+        <div class="row between">
+          <div class="helper">
+            <a href="#" id="forgotLink">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn primary">Log in</button>
+        </div>
+
+        <p class="meta">
+          Don’t have an account?
+          <a class="link" href="../register/register.html">Create one</a>
+        </p>
+
+        <p id="error" class="error"></p>
+      </form>
+    </section>
+  </main>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Reset your password</h3>
+      <p>Enter your student number to receive a reset link.</p>
+      <form id="forgotForm">
+        <input type="text" id="forgotStudentNumber" placeholder="ST0123456789" required />
+        <div class="row end">
+          <button type="button" class="btn ghost" id="closeForgot">Cancel</button>
+          <button type="submit" class="btn primary">Send reset link</button>
+        </div>
+      </form>
+      <p id="forgotMsg" class="success"></p>
+      <p id="forgotErr" class="error"></p>
+    </div>
+  </div>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>

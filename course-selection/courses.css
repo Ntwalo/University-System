@@ -1,0 +1,87 @@
+:root {
+  --bg: #0b1220;
+  --surface: #0e1628;
+  --card: rgba(255,255,255,0.06);
+  --text: #e5e7eb;
+  --muted: #a3aed0;
+  --primary: #7c3aed;
+  --primary-700: #6d28d9;
+  --success: #22c55e;
+  --warn: #f59e0b;
+  --error: #ef4444;
+  --border: rgba(255,255,255,0.1);
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  color: var(--text);
+  background: linear-gradient(180deg, #0b1220, #0e1628);
+  min-height: 100svh;
+}
+
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(11,18,32,0.85);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .left { display: flex; align-items: center; gap: 10px; }
+.logo { height: 32px; opacity: 0.9; }
+.app-name { font-weight: 700; letter-spacing: 0.3px; }
+
+.nav { display: flex; align-items: center; gap: 12px; }
+.nav a {
+  color: #c4b5fd; text-decoration: none;
+  padding: 8px 10px; border-radius: 8px;
+}
+.nav a:hover { background: rgba(196,181,253,0.12); }
+
+.btn {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 14px; color: var(--text); background: transparent;
+  cursor: pointer;
+}
+.btn.primary {
+  border: none; color: white;
+  background: linear-gradient(135deg, var(--primary), var(--primary-700));
+  box-shadow: 0 8px 24px rgba(124,58,237,0.35);
+}
+
+.container { padding: 18px; max-width: 1100px; margin: 0 auto; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 14px 0;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+.grid {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+.course-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  background: rgba(255,255,255,0.04);
+  display: grid; gap: 8px;
+}
+.course-card h4 { margin: 0; }
+.course-card p { margin: 0; color: var(--muted); }
+.course-card input[type="checkbox"] { transform: scale(1.2); }
+
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.muted { color: var(--muted); }
+.error { color: var(--error); }
+.success { color: var(--success); }
