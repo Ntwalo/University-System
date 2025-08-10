@@ -1,5 +1,5 @@
 // register/register.js
-// Create Auth user, then write Firestore doc at students/<uid>, then show student number.
+// Handles user registration, creates Auth user, writes profile to Firestore at students/<uid>
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
@@ -17,7 +17,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-/* Your Firebase config */
+/* Firebase config */
 const firebaseConfig = {
   apiKey: "AIzaSyAXk05rcENJrLJWY8CZ5evgI7ZdmhUxdNY",
   authDomain: "universitysystem-aaf1c.firebaseapp.com",
@@ -28,17 +28,18 @@ const firebaseConfig = {
   measurementId: "G-2XPE6BZNV8"
 };
 
+/* Initialize Firebase */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* DOM */
+/* DOM elements */
 const form = document.getElementById('registerForm');
 const errorEl = document.getElementById('error');
 const successEl = document.getElementById('success');
 const studentNumberDisplay = document.getElementById('studentNumberDisplay');
 
-/* Helpers: student number */
+/* Generate student number */
 function generateStudentNumber() {
   let digits = "";
   for (let i = 0; i < 10; i++) digits += Math.floor(Math.random() * 10);
@@ -55,7 +56,7 @@ async function generateUniqueStudentNumber() {
   throw new Error("Could not generate a unique student number. Try again.");
 }
 
-/* Validation */
+/* Validate form data */
 function validate(data) {
   const { firstName, lastName, email, gender, dob, password, confirmPassword } = data;
   if (!firstName || !lastName || !email || !gender || !dob || !password || !confirmPassword)
@@ -65,7 +66,7 @@ function validate(data) {
   return null;
 }
 
-/* Submit handler */
+/* Handle form submit */
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   errorEl.textContent = "";
@@ -85,14 +86,17 @@ form.addEventListener('submit', async (e) => {
   if (err) { errorEl.textContent = err; return; }
 
   try {
-    // 1) Create the Auth user
+    // 1) Create Auth user
     const cred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+
+    // 2) Ensure auth state is synced so Firestore sees request.auth.uid
+    await auth.currentUser.reload();
     const uid = cred.user.uid;
 
-    // 2) Generate a unique student number
+    // 3) Generate unique student number
     const studentNumber = await generateUniqueStudentNumber();
 
-    // 3) Write the Firestore profile at students/<uid>
+    // 4) Write profile to Firestore at students/<uid>
     await setDoc(doc(db, "students", uid), {
       uid,
       studentNumber,
@@ -112,7 +116,7 @@ form.addEventListener('submit', async (e) => {
       }
     });
 
-    // 4) Show success UI with student number
+    // 5) Show success UI
     studentNumberDisplay.textContent = studentNumber;
     successEl.classList.remove('hidden');
     form.reset();
