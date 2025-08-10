@@ -1,0 +1,42 @@
+<!-- /index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to Login…</title>
+  <meta http-equiv="refresh" content="1; url=login/login.html">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #0b1220;
+      color: #e5e7eb;
+    }
+    .box {
+      text-align: center;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    h1 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    p { font-size: 0.9rem; color: #a3aed0; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Redirecting…</h1>
+    <p>Please wait while we take you to the login page</p>
+  </div>
+  <script>
+    // JavaScript fallback if meta refresh is blocked/disabled
+    setTimeout(() => {
+      window.location.href = "login/login.html";
+    }, 1000);
+  </script>
+</body>
+</html>
