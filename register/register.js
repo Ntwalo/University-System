@@ -1,13 +1,23 @@
-// register/register.js (fixed: no sign-out race)
+// register/register.js
+// Create Auth user, then write Firestore doc at students/<uid>, then show student number.
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
-  getAuth, createUserWithEmailAndPassword
+  getAuth,
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
-  getFirestore, doc, setDoc, serverTimestamp
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { generateUniqueStudentNumber } from "../utils/student.js";
 
+/* Your Firebase config */
 const firebaseConfig = {
   apiKey: "AIzaSyAXk05rcENJrLJWY8CZ5evgI7ZdmhUxdNY",
   authDomain: "universitysystem-aaf1c.firebaseapp.com",
@@ -22,13 +32,32 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+/* DOM */
 const form = document.getElementById('registerForm');
 const errorEl = document.getElementById('error');
 const successEl = document.getElementById('success');
 const studentNumberDisplay = document.getElementById('studentNumberDisplay');
 
-function validate(formData) {
-  const { firstName, lastName, email, gender, dob, password, confirmPassword } = formData;
+/* Helpers: student number */
+function generateStudentNumber() {
+  let digits = "";
+  for (let i = 0; i < 10; i++) digits += Math.floor(Math.random() * 10);
+  return `ST${digits}`;
+}
+async function generateUniqueStudentNumber() {
+  const maxAttempts = 10;
+  for (let i = 0; i < maxAttempts; i++) {
+    const sn = generateStudentNumber();
+    const q = query(collection(db, "students"), where("studentNumber", "==", sn));
+    const snap = await getDocs(q);
+    if (snap.empty) return sn;
+  }
+  throw new Error("Could not generate a unique student number. Try again.");
+}
+
+/* Validation */
+function validate(data) {
+  const { firstName, lastName, email, gender, dob, password, confirmPassword } = data;
   if (!firstName || !lastName || !email || !gender || !dob || !password || !confirmPassword)
     return "Please fill in all fields.";
   if (password.length < 6) return "Password must be at least 6 characters.";
@@ -36,6 +65,7 @@ function validate(formData) {
   return null;
 }
 
+/* Submit handler */
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   errorEl.textContent = "";
@@ -55,14 +85,14 @@ form.addEventListener('submit', async (e) => {
   if (err) { errorEl.textContent = err; return; }
 
   try {
-    // 1) Create auth user
+    // 1) Create the Auth user
     const cred = await createUserWithEmailAndPassword(auth, data.email, data.password);
     const uid = cred.user.uid;
 
-    // 2) Generate unique student number
-    const studentNumber = await generateUniqueStudentNumber(db);
+    // 2) Generate a unique student number
+    const studentNumber = await generateUniqueStudentNumber();
 
-    // 3) Write profile document (requires rules to allow this)
+    // 3) Write the Firestore profile at students/<uid>
     await setDoc(doc(db, "students", uid), {
       uid,
       studentNumber,
@@ -82,17 +112,16 @@ form.addEventListener('submit', async (e) => {
       }
     });
 
+    // 4) Show success UI with student number
     studentNumberDisplay.textContent = studentNumber;
     successEl.classList.remove('hidden');
     form.reset();
   } catch (ex) {
     console.error(ex);
-    // Friendlier messages for common cases
     const map = {
-      "permission-denied": "Permission denied by Firestore rules. See step 2 below.",
-      "unauthenticated": "You must be signed in to write. Try again.",
-      "already-exists": "This email is already registered.",
-      "invalid-argument": "Invalid data sent. Check required fields."
+      "auth/email-already-in-use": "This email is already registered.",
+      "permission-denied": "Permission denied by Firestore rules.",
+      "unauthenticated": "You must be signed in to write. Try again."
     };
     errorEl.textContent = map[ex.code] || ex.message || "Registration failed.";
   }
